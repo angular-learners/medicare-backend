@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/medicare")
-@CrossOrigin
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
 
 
@@ -84,6 +83,7 @@ public class UserController {
         }
         return ResponseEntity.ok(addressResponse);
     }
+
 
     @GetMapping("/users/welcome")
     public String getMessage() {

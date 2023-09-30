@@ -18,17 +18,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig  {
 
-
-
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver handlerExceptionResolver;
+
+    @Autowired
+    private CorsConfig corsConfig;
 
     @Bean
     public UserDetailsService userDetailsService(){
@@ -52,7 +55,7 @@ public class SecurityConfig  {
                 .and()
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .cors().configurationSource(corsConfig.corsConfigurationSource()).and().build();
     }
 
     @Bean
@@ -72,4 +75,6 @@ public class SecurityConfig  {
     public JwtAuthenticationFilter jwtAuthenticationFilter(){
         return new JwtAuthenticationFilter(handlerExceptionResolver);
     }
+
+
 }
